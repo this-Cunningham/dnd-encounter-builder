@@ -58,7 +58,8 @@ export const getDifficultyXpRanges = (adventurers: Adventurer[]) => {
 // console.log(getDifficultyXpRanges([{level: 1},{level: 1},{level: 1}]));
 
 export const getTargetDifficultyXpRange = ({
-  adventurers, targetDifficulty
+  adventurers,
+  targetDifficulty
 }: {
   adventurers: Adventurer[];
   targetDifficulty: Difficulty;

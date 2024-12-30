@@ -122,7 +122,7 @@ export enum SizeCategoryName {
  */
 export interface DnDData {
   encounterDifficultyAndXPThresholds: EncounterDifficultyAndXPThresholds;
-  encounterMultipliersTable: EncounterMultipliersTable;
+  monsterQuantityToXpMultiplierTable: MonsterQuantityToXpMultiplierTable;
   monsterStatisticsByCr: MonsterStatisticsByCr;
   defensiveCrTable: DefensiveCrTableEntry[];
   offensiveCrTable: OffensiveCrTableEntry[];
@@ -169,13 +169,11 @@ export enum Difficulty {
 export type DifficultyXpRange = [number, number];
 
 /**
- * **EncounterMultipliersTable Type**
+ * **MonsterQuantityToXpMultiplierTable Type**
  *
- * Maps each Challenge Rating (CR) to its corresponding encounter multiplier.
+ * Maps quantity of monsters (qty = index of the array) to its corresponding encounter multiplier.
  */
-export type EncounterMultipliersTable = {
-  [cr in ChallengeRating]?: number;
-};
+export type MonsterQuantityToXpMultiplierTable = number[];
 
 /**
  * **MonsterStatisticsByCr Type**
