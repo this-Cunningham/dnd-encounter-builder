@@ -1,5 +1,5 @@
 import { dndData } from '../app/assets/dnd-data';
-import { CharacterLevel } from '../app/assets/dnd-types';
+import { CharacterLevel, Difficulty, DifficultyXpRange } from '../app/assets/dnd-types';
 
 type Adventurer = {
   level: CharacterLevel;
@@ -28,19 +28,22 @@ export const getDifficultyXpRanges = (adventurers: Adventurer[]) => {
     getAdventurerXpThreshold(adventurer)
   ));
 
-  const difficultyXpRanges = encounterXpThresholds.reduce((prev, curr) => {
+  const difficultyXpRanges = encounterXpThresholds.reduce<{
+    easy: DifficultyXpRange;
+    medium: DifficultyXpRange;
+    hard: DifficultyXpRange;
+    deadly: DifficultyXpRange;
+  }>((prev, curr) => {
     const [easyMin, easyMax] = prev.easy;
     const [mediumMin, mediumMax] = prev.medium;
     const [hardMin, hardMax] = prev.hard;
     const [deadlyMin, deadlyMax] = prev.deadly;
 
     return ({
-      ...prev,
       easy: [easyMin + curr.easy, easyMax + curr.medium],
       medium: [mediumMin + curr.medium, mediumMax + curr.hard],
       hard: [hardMin + curr.hard, hardMax + curr.deadly],
-      deadly: [deadlyMin + curr.deadly, deadlyMax + (curr.deadly * 2)],
-
+      deadly: [deadlyMin + curr.deadly, deadlyMax + (curr.deadly * 1.5)],
     });
   }, {
     easy: [0,-1], // tuple for target range of xp on easy -- [min, max]
@@ -52,8 +55,20 @@ export const getDifficultyXpRanges = (adventurers: Adventurer[]) => {
   return difficultyXpRanges;
 };
 
-console.log(getDifficultyXpRanges([{level: 4},{level: 4},{level: 6}]));
+// console.log(getDifficultyXpRanges([{level: 1},{level: 1},{level: 1}]));
 
-export const getTargetDifficultyXpRange = ({ }) => {
+export const getTargetDifficultyXpRange = ({
+  adventurers, targetDifficulty
+}: {
+  adventurers: Adventurer[];
+  targetDifficulty: Difficulty;
+}) => {
+  const xpRangesByDifficulty = getDifficultyXpRanges(adventurers);
 
+  return xpRangesByDifficulty[targetDifficulty];
 };
+
+// console.log(getTargetDifficultyXpRange({
+//   adventurers: [{level: 1},{level: 1},{level: 1}],
+//   targetDifficulty: Difficulty.EASY
+// }));

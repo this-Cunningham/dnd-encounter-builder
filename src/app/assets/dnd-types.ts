@@ -159,6 +159,15 @@ export interface XPThresholds {
   deadlyXp: number;
 }
 
+export enum Difficulty {
+  EASY = 'easy',
+  MEDIUM = 'medium',
+  HARD = 'hard',
+  DEADLY = 'deadly',
+};
+
+export type DifficultyXpRange = [number, number];
+
 /**
  * **EncounterMultipliersTable Type**
  *
